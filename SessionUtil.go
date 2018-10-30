@@ -16,28 +16,6 @@ func GetSession(ctx *gin.Context, k string) interface{} {
 	return session.Get(k)
 }
 
-func SaveUser(ctx *gin.Context, user interface{}) {
-	SetSession(ctx, "user", user)
-}
-
-func LoadUser(ctx *gin.Context) interface{} {
-	return GetSession(ctx, "user")
-}
-
-func SaveRoleId(ctx *gin.Context, roleId interface{}) {
-	session := sessions.Get(ctx)
-
-	session.Set("roleid",roleId)
-	session.Save()
-}
-
-func LoadRoleId(ctx *gin.Context) interface{} {
-	session := sessions.Get(ctx)
-	o := session.Get("roleid")
-	return o
-
-}
-
 func ClearAllSession(ctx *gin.Context) {
 	session := sessions.Get(ctx)
 	session.Clear()

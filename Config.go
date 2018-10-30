@@ -14,6 +14,7 @@ type Config struct {
 	App         map[string]string
 	Session     map[string]string
 	Datasource  map[string](map[string]string)
+	Redis  map[string](map[string]string)
 	Static      map[string]string
 	StaticFile  map[string]string
 	Logger      map[string]string
@@ -27,6 +28,7 @@ func (cfg *Config) Parse(fpath string) {
 	cfg.App = make(map[string]string)
 	cfg.Session = make(map[string]string)
 	cfg.Datasource = make(map[string](map[string]string))
+	cfg.Redis = make(map[string](map[string]string))
 	cfg.Static = make(map[string]string)
 	cfg.StaticFile = make(map[string]string)
 	cfg.View = make(map[string]string)
@@ -91,7 +93,12 @@ func (cfg *Config) Parse(fpath string) {
 				cfg.Datasource[sd[2]] = make(map[string]string)
 			}
 			cfg.Datasource[sd[2]][sd[3]] = v
-
+		} else if strings.Index(k, "jgin.redis.") == 0 {
+			var sd = strings.Split(k, ".")
+			if nil == cfg.Redis[sd[2]] {
+				cfg.Redis[sd[2]] = make(map[string]string)
+			}
+			cfg.Redis[sd[2]][sd[3]] = v
 		}
 	}
 

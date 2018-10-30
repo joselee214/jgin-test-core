@@ -75,13 +75,21 @@ func NoRoute(ctx *gin.Context) {
 
 }
 
-
 func NoMethod(ctx *gin.Context) {
 	uri := ctx.Request.RequestURI
 	fmt.Printf("NoMethod" + uri)
+
 	uri = strings.TrimLeft(uri, "/")
 	uri = strings.TrimSuffix(uri, ".shtml")
-	//ctx.HTML(http.StatusOK, model+"/"+action+".html", gin.H{"title": "test"})
-	ctx.HTML(200, uri+".html", "Q")
-}
 
+	isAjax := "XMLHttpRequest"==ctx.GetHeader("X-Requested-With")
+	isPage := strings.Contains(ctx.Request.RequestURI,".shtml")
+
+	if isPage{
+		//response html
+		ctx.HTML(200, uri+".html", "Q")
+	}else if isAjax{
+		//response json
+		ctx.JSON(200,nil)
+	}
+}
